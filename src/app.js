@@ -1,13 +1,24 @@
 const yargs = require("yargs");
 const { client, connection } = require("./db/connection");
-const { addMovie } = require("./utils");
+const { addMovie, findMovie, results, updateMovie, results1, deleteMovie} = require("./utils");
 
 const app = async (yargsObj) => {
     try {
         const collection = await connection();
         if (yargsObj.add) {
             await addMovie(collection, {title:yargsObj.title, actor:yargsObj.actor});
-            //add movie to mongodb database, needs collection and success message 
+            console.log("Movie added") 
+        } else if(yargsObj.find) {
+            await findMovie(collection, {title:yargsObj.title, actor:yargsObj.actor}); 
+            console.log(results)
+
+        } else if (yargsObj.update){
+            await updateMovie(collection, {title:yargsObj.title, actor:yargsObj.actor});
+            console.log("movie updated")
+        } else if (yargsObj.delete) {
+            await deleteMovie(collection, {title:yargsObj.title, actor:yargsObj.actor});
+            console.log("Movie deleted")
+
         } else {
             console.log("incorrect command");
         }
